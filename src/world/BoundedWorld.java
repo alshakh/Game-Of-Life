@@ -12,7 +12,6 @@ public class BoundedWorld implements World{
 		this.width = width;
 		this.height = height;
 		this.cellData = new boolean[width][height];
-		step(); // TMP : init cellData
 	}
 	
 	@Override
