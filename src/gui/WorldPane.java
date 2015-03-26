@@ -2,58 +2,85 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import javax.swing.JPanel;
+import world.World;
 
 /**
  *
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
  */
 public class WorldPane extends javax.swing.JPanel {
-	private int width;
-	private int height;
+
+	private Viewport viewport;
 	
-	public static final Color ALIVE = Color.WHITE;
-	public static final Color DEAD = Color.BLACK;
+
 	/**
 	 * Creates new form WorldPane
-	 * @param width
-	 * @param height
+	 *
+	 * @param viewport
 	 */
-	public WorldPane(int width,int height) {
-		this.width = width;
-		this.height = height;
+	public WorldPane(final Viewport viewport) {
+		
+		this.viewport = viewport;
+		
+		final JPanel thisObj = this;
+		MouseAdapter ma = new MouseAdapter() {
+			Point oldPos = null;
+			
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				viewport.clicked(me.getPoint());
+				thisObj.repaint();
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent me) {
+				if(oldPos == null) {
+					oldPos = me.getPoint();
+				} else {
+					Point newPos = me.getPoint();
+					
+					viewport.dragged(oldPos, me.getPoint());
+					oldPos = me.getPoint();
+				}
+				thisObj.repaint();
+			}
+		
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent me) {
+				boolean direction;
+				if(me.getWheelRotation()<0) {
+					direction = Viewport.WHEEL_DOWN;
+				} else {
+					direction = Viewport.WHEEL_UP;
+				}
+				viewport.wheeled(me.getPoint(), me.getScrollAmount(), direction);
+				thisObj.repaint();
+			}
+			@Override
+			public void mouseReleased(MouseEvent me) {
+				oldPos = null;
+			}
+		};
+		addMouseListener(ma);
+		addMouseWheelListener(ma);
+		addMouseMotionListener(ma);
 		
 		//initComponents();
 	}
-	public WorldPane() {
-		this(10,15);
-	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
-		final int cellSize = 20;
-		for(int i = 0 ; i < width ; i++ ) {
-			for ( int j = 0 ; j < height ; j++ ) {
-				Color st;
-				if(Math.random() > 0.5) {
-					st = ALIVE;
-				} else {
-					st = DEAD;
-				}
-				g.setColor(st);
-				g.fillRect(i*cellSize,j*cellSize,cellSize,cellSize);
-			}
+		if(!viewport.sizeInited()) {
+			viewport.setSize(this.getSize());
 		}
-		g.setColor(Color.GRAY);
-		for(int i = 0 ; i <= width ; i++ ) {
-			g.drawLine(cellSize*i, 0, cellSize*i, height*cellSize);
-			
-		}
-		for(int i = 0 ; i <= height ; i++ ) {
-			g.drawLine(0, cellSize*i,  width*cellSize,cellSize*i);
-		}
-		
+		viewport.paintView(g);
 	}
-	
+
 	/**
 	 * This method is called from within the constructor to initialize the
 	 * form. WARNING: Do NOT modify this code. The content of this method is

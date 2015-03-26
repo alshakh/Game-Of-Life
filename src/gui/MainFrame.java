@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.Dimension;
+import world.BoundedWorld;
+
 /**
  *
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
@@ -11,6 +14,7 @@ public class MainFrame extends javax.swing.JFrame {
 	 */
 	public MainFrame() {
 		initComponents();
+		
 	}
 
 	/**
@@ -22,7 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
-                worldPane1 = new gui.WorldPane();
+                worldPane1 = new WorldPane(new WorldViewport(new BoundedWorld(10,10)));
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 

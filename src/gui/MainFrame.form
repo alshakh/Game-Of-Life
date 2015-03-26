@@ -42,6 +42,9 @@
   </Layout>
   <SubComponents>
     <Container class="gui.WorldPane" name="worldPane1">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new WorldPane(new WorldViewport(new BoundedWorld(10,10)));"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
