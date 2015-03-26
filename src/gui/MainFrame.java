@@ -26,7 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
-                worldPane1 = new WorldPane(new WorldViewport(new WarpedWorld(10,10)));
+                worldPane1 = new WorldPane(new WorldViewport(new world.WarpedWorld(100,150)));
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 

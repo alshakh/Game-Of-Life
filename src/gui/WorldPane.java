@@ -21,6 +21,9 @@ public class WorldPane extends javax.swing.JPanel {
 	 *
 	 * @param viewport
 	 */
+	public WorldPane() {
+		this(new WorldViewport(new world.WarpedWorld(100,200)));
+	}
 	public WorldPane(final Viewport viewport) {
 		
 		this.viewport = viewport;
@@ -81,9 +84,7 @@ public class WorldPane extends javax.swing.JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		if(!viewport.sizeInited()) {
-			viewport.setSize(this.getSize());
-		}
+		viewport.setSize(this.getSize());
 		viewport.paintView(g);
 	}
 
