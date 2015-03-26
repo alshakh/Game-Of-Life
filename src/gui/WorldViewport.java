@@ -23,31 +23,38 @@ public class WorldViewport implements Viewport {
 	private final World worldRef;
 	private Dimension portSize;
 
-	private int cellSize = 10;
-	private Point offset = new Point(0,0);
+	private int cellSize;
+	private Point offset;
 
 	public WorldViewport(World world, Dimension portSize) {
 		this.worldRef = world;
 		this.portSize = portSize;
+		this.offset = new Point(0,0);
+		this.cellSize = 10;
 	}
 
 	public WorldViewport(World world) {
 		this(world, null);
 	}
 
+	
+	@Override
 	public void paintView(Graphics g) {
 		if (!sizeInited()) {
 			return;
 		}
+		// background
 		g.setColor(Color.GRAY);
 		g.fillRect(0, 0, portSize.width, portSize.height);
+		
+		
 		final int worldWidth = worldRef.getWidth();
 		final int worldHeight = worldRef.getHeight();
 
 		for (int i = 0; i < worldWidth; i++) {
 			for (int j = 0; j < worldHeight; j++) {
 				Color cellColor;
-				if (worldRef.getCell(i, j)) {
+				if (worldRef.isAliveCell(i, j)) {
 					cellColor = Viewport.ALIVE_COLOR;
 				} else {
 					cellColor = Viewport.DEAD_COLOR;
@@ -127,8 +134,6 @@ public class WorldViewport implements Viewport {
 		
 		offset.x += (toWindowPosition.x - fromWindowPosition.x);
 		offset.y += (toWindowPosition.y - fromWindowPosition.y);
-		
-		
 	}
 
 	@Override
@@ -149,8 +154,8 @@ public class WorldViewport implements Viewport {
 	 */
 	private Point antiClick(Point windowPosition) {
 		final Point gridPosition = toGridPosition(windowPosition);
-		final Point cell = new Point((windowPosition.x - offset.x) / cellSize,
-					     (windowPosition.y - offset.y) / cellSize);
+		final Point cell = new Point(gridPosition.x / cellSize,
+					     gridPosition.y / cellSize);
 		if(cell.x >= worldRef.getHeight()) return NOT_A_CELL;
 		if(cell.y >= worldRef.getWidth()) return NOT_A_CELL;
 		if(cell.x < 0) return NOT_A_CELL;
@@ -161,5 +166,4 @@ public class WorldViewport implements Viewport {
 	private Point toGridPosition(Point windowPosition) {
 		return new Point(windowPosition.x - offset.x, windowPosition.y - offset.y);
 	}
-
 }

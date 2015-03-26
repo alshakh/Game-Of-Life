@@ -23,7 +23,13 @@ public class BoundedWorld implements World{
 			}
 		}
 	}
-
+	@Override
+	public void setp(int n) {
+		for(int i = 0 ; i < n ; i++ ) {
+			step();
+		}
+	}
+	
 	@Override
 	public int getWidth() {
 		return this.width;
@@ -35,7 +41,7 @@ public class BoundedWorld implements World{
 	}
 
 	@Override
-	public boolean getCell(int x, int y) {
+	public boolean isAliveCell(int x, int y) {
 		if(x >= width) return false;
 		if(y >= height) return false;
 		return cellData[x][y];
@@ -48,5 +54,7 @@ public class BoundedWorld implements World{
 		
 		cellData[x][y] = !cellData[x][y];
 	}
+
+	
 	
 }

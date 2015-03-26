@@ -1,13 +1,11 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.JPanel;
-import world.World;
 
 /**
  *
@@ -15,7 +13,7 @@ import world.World;
  */
 public class WorldPane extends javax.swing.JPanel {
 
-	private Viewport viewport;
+	private final Viewport viewport;
 	
 
 	/**
