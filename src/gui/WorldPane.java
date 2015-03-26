@@ -31,7 +31,15 @@ public class WorldPane extends javax.swing.JPanel {
 			
 			@Override
 			public void mouseClicked(MouseEvent me) {
-				viewport.clicked(me.getPoint());
+				boolean button;
+				if(me.getButton() == MouseEvent.BUTTON3) {
+					button = Viewport.RIGHT_BUTTON;
+				} else if(me.getButton() == MouseEvent.BUTTON1) {
+					button = Viewport.LEFT_BUTTON;
+				} else {
+					return; // other buttons are not allowed
+				}
+				viewport.clicked(me.getPoint(),button);
 				thisObj.repaint();
 			}
 			

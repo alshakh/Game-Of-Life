@@ -15,12 +15,15 @@ public interface Viewport {
 	public static final boolean WHEEL_UP = true;
 	public static final boolean WHEEL_DOWN = false;
 	
+	public static final boolean RIGHT_BUTTON = true;
+	public static final boolean LEFT_BUTTON = false;
+	
 	public static final Color ALIVE_COLOR = Color.WHITE;
 	public static final Color DEAD_COLOR = Color.BLACK;
 	public static final Color LINE_COLOR = Color.GRAY;
 	
 	public void paintView(Graphics g);
-	public void clicked(Point windowPosition);
+	public void clicked(Point windowPosition, boolean button);
 	public void wheeled(Point windowPosition,int amount, boolean direction);
 	public void dragged(Point fromWindowPosition,Point toWindowPosition);
 	public void setSize(Dimension portSize);
