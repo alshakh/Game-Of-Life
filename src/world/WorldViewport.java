@@ -1,5 +1,6 @@
-package gui;
+package world;
 
+import gui.Viewport;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -134,8 +135,6 @@ public class WorldViewport implements Viewport {
 							  cell.y * cellSize + (int) (oldCursorCellPosRatio_Y * cellSize));
 		offset.x = windowPosition.x - gridCursorPointer.x;
 		offset.y = windowPosition.y - gridCursorPointer.y;
-
-		System.out.println(cellSize);
 	}
 
 	@Override

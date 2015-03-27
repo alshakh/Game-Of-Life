@@ -1,20 +1,23 @@
 package gui;
 
-import java.awt.Dimension;
-import world.WarpedWorld;
+import world.WorldViewport;
+import world.World;
 
 /**
  *
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
  */
 public class MainFrame extends javax.swing.JFrame {
-
+	
+	private final World worldRef;
+	
 	/**
 	 * Creates new form GofFrame
+	 * @param worldRef
 	 */
-	public MainFrame() {
+	public MainFrame(World worldRef) {
+		this.worldRef = worldRef;
 		initComponents();
-		
 	}
 
 	/**
@@ -26,7 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
-                worldPane1 = new WorldPane(new WorldViewport(new world.WarpedWorld(100,150)));
+                worldPane1 = new WorldPane(new WorldViewport(worldRef));
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 

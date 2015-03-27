@@ -1,6 +1,8 @@
 package gameoflife;
 
 import gui.MainFrame;
+import world.RandomWorld;
+import world.WarpedWorld;
 
 /**
  *
@@ -35,8 +37,9 @@ public static void main(String args[]) {
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-				new MainFrame().setVisible(true);
+				new MainFrame(new WarpedWorld(10,10)).setVisible(true);
 			}
 		});
 	}

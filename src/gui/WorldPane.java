@@ -1,5 +1,6 @@
 package gui;
 
+import world.WorldViewport;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -16,14 +17,15 @@ public class WorldPane extends javax.swing.JPanel {
 	private final Viewport viewport;
 	
 
+	public WorldPane() {
+		this(new WorldViewport(new world.WarpedWorld(100,200)));
+	}
+	
 	/**
 	 * Creates new form WorldPane
 	 *
 	 * @param viewport
 	 */
-	public WorldPane() {
-		this(new WorldViewport(new world.WarpedWorld(100,200)));
-	}
 	public WorldPane(final Viewport viewport) {
 		
 		this.viewport = viewport;
@@ -72,7 +74,7 @@ public class WorldPane extends javax.swing.JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent me) {
-				oldPos = null;
+				oldPos = null; // without this, two separate mouseDrags will be one and weird behaviour will happen.
 			}
 		};
 		addMouseListener(ma);
