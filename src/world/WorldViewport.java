@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import world.World;
 
 /**
  * Paint and interact with world.
@@ -80,7 +79,6 @@ public class WorldViewport implements Viewport {
 
 		if (button == LEFT_BUTTON) {
 			worldRef.step();
-			return;
 		} else {
 			final Point gridPosition = antiClick(windowPosition);
 			if (gridPosition == NOT_A_CELL) {
@@ -88,7 +86,6 @@ public class WorldViewport implements Viewport {
 			}
 			worldRef.toggle(gridPosition.x, gridPosition.y);
 		}
-
 	}
 
 	/**
@@ -181,11 +178,11 @@ public class WorldViewport implements Viewport {
 		if (cell.y < 0) {
 			return NOT_A_CELL;
 		}
-		// (windowPosition.x - x_offset) is transforming the click into coord system where 0 is the edge of grid
 		return cell;
 	}
 
 	private Point toGridPosition(Point windowPosition) {
+		// (windowPosition.x - offset.x) is transforming the click into coord system where 0 is the edge of grid
 		return new Point(windowPosition.x - offset.x, windowPosition.y - offset.y);
 	}
 }

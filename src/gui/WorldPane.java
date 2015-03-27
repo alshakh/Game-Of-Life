@@ -15,56 +15,55 @@ import javax.swing.JPanel;
 public class WorldPane extends javax.swing.JPanel {
 
 	private final Viewport viewport;
-	
 
 	public WorldPane() {
-		this(new WorldViewport(new world.WarpedWorld(100,200)));
+		this(new WorldViewport(new world.WarpedWorld(100, 200)));
 	}
-	
+
 	/**
 	 * Creates new form WorldPane
 	 *
 	 * @param viewport
 	 */
 	public WorldPane(final Viewport viewport) {
-		
+
 		this.viewport = viewport;
-		
+
 		final JPanel thisObj = this;
 		MouseAdapter ma = new MouseAdapter() {
 			Point oldPos = null;
-			
+
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				boolean button;
-				if(me.getButton() == MouseEvent.BUTTON3) {
+				if (me.getButton() == MouseEvent.BUTTON3) {
 					button = Viewport.RIGHT_BUTTON;
-				} else if(me.getButton() == MouseEvent.BUTTON1) {
+				} else if (me.getButton() == MouseEvent.BUTTON1) {
 					button = Viewport.LEFT_BUTTON;
 				} else {
 					return; // other buttons are not allowed
 				}
-				viewport.clicked(me.getPoint(),button);
+				viewport.clicked(me.getPoint(), button);
 				thisObj.repaint();
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent me) {
-				if(oldPos == null) {
+				if (oldPos == null) {
 					oldPos = me.getPoint();
 				} else {
 					Point newPos = me.getPoint();
-					
+
 					viewport.dragged(oldPos, me.getPoint());
 					oldPos = me.getPoint();
 				}
 				thisObj.repaint();
 			}
-		
+
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent me) {
 				boolean direction;
-				if(me.getWheelRotation()<0) {
+				if (me.getWheelRotation() < 0) {
 					direction = Viewport.WHEEL_DOWN;
 				} else {
 					direction = Viewport.WHEEL_UP;
@@ -72,6 +71,7 @@ public class WorldPane extends javax.swing.JPanel {
 				viewport.wheeled(me.getPoint(), me.getScrollAmount(), direction);
 				thisObj.repaint();
 			}
+
 			@Override
 			public void mouseReleased(MouseEvent me) {
 				oldPos = null; // without this, two separate mouseDrags will be one and weird behaviour will happen.
@@ -80,7 +80,7 @@ public class WorldPane extends javax.swing.JPanel {
 		addMouseListener(ma);
 		addMouseWheelListener(ma);
 		addMouseMotionListener(ma);
-		
+
 		//initComponents();
 	}
 

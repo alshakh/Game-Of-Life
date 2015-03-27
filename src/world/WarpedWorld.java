@@ -18,13 +18,11 @@ public class WarpedWorld extends AbstractWorld {
 			for (int j = 0; j < getHeight(); j++) {
 				int neighbors = countNeighbors(i,j, swapData);
 				boolean thisCell = swapData[i][j];
+				// if cell alive 2||3 ==> alive else ==> dead
+				// if cell dead     3 ==> alive else ==> dead
 				if(thisCell && (neighbors ==2 || neighbors ==3)) {
 					cellData[i][j] = true;
-				} else if (!thisCell && neighbors == 3 ) {
-					cellData[i][j] = true;
-				} else {
-					cellData[i][j] = false;
-				}
+				} else cellData[i][j] = !thisCell && neighbors == 3;
 			}
 		}
 	}

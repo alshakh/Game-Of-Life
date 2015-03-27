@@ -14,7 +14,7 @@ public class RandomWorld extends AbstractWorld {
 	public void step() {
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeight(); j++) {
-				cellData[i][j] = (Math.random() < 0.5 ? true : false);
+				cellData[i][j] = Math.random() < 0.5;
 			}
 		}
 	}
