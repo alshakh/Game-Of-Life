@@ -8,97 +8,73 @@ import java.util.Arrays;
  */
 public class WarpedWorld extends AbstractWorld {
 
-	public WarpedWorld(int width, int height) {
-		super(width, height);
-	}
+    public WarpedWorld(int width, int height) {
+        super(width, height);
+    }
 
-	@Override
-	public void step() {
-		swapBuffer(); // now cellData & preData is swapped
-		boolean[][] cellData = super.getCellData();
-		boolean[][] preData = super.getPreData();
-		int[][] neighborCount = super.getNeighborCountData();
-		
-		fillNeighborCountData(preData);
-		// from here on, can be parallelized
-		
-		for (int i = 0; i < getWidth(); i++) {
-			for (int j = 0; j < getHeight(); j++) {
-				
-				int neighbors = neighborCount[i][j];
-				
-				boolean thisCell = preData[i][j];
-				// if cell alive 2||3 ==> alive else ==> dead
-				// if cell dead     3 ==> alive else ==> dead
-				if (thisCell && (neighbors == 2 || neighbors == 3)) {
-					cellData[i][j] = true;
-				} else {
-					cellData[i][j] = !thisCell && neighbors == 3;
-				}
-			}
-		}
-	}
+    @Override
+    public void step() {
+        swapBuffer(); // now cellData & preData is swapped
+        boolean[][] cellData = super.getCellData();
+        boolean[][] preData = super.getPreData();
+        int[][] neighborCount = super.getNeighborCountData();
 
-	@Override
-	protected void fillNeighborCountData(boolean[][] grid) {
-		// can be parallelized
+        fillNeighborCountData(preData);
+        // from here on, can be parallelized
 
-		final int[][] neighborData = getNeighborCountData();
-		final int width = super.getWidth();
-		final int height = super.getHeight();
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
 
-		// empty neighborCount
-		for (int i = 0; i < getWidth(); i++) {
-			Arrays.fill(neighborData[i], 0);
-		}
+                int neighbors = neighborCount[i][j];
 
-		// fill neighborCount
-		// -- Not edge cases
-		for (int i = 1; i < width - 1; i++) {
-			for (int j = 1; j < height - 1; j++) {
-				if (super.isAliveCell(i, j)) {
-					neighborData[i - 1][j - 1] += 1;
-					neighborData[i - 1][j] += 1;
-					neighborData[i - 1][j + 1] += 1;
+                boolean thisCell = preData[i][j];
+                // if cell alive 2||3 ==> alive else ==> dead
+                // if cell dead     3 ==> alive else ==> dead
+                if (thisCell && (neighbors == 2 || neighbors == 3)) {
+                    cellData[i][j] = true;
+                } else {
+                    cellData[i][j] = !thisCell && neighbors == 3;
+                }
+            }
+        }
+    }
 
-					neighborData[i][j - 1] += 1;
-					neighborData[i][j + 1] += 1;
+    @Override
+    protected void fillNeighborCountData(boolean[][] grid) {
+        // can be parallelized
 
-					neighborData[i + 1][j - 1] += 1;
-					neighborData[i + 1][j] += 1;
-					neighborData[i + 1][j + 1] += 1;
-				}
-			}
-		}
+        final int[][] neighborData = getNeighborCountData();
+        final int width = super.getWidth();
+        final int height = super.getHeight();
 
-		// edge cases ( warped around the grid )
-		int im1, jm1, ip1, jp1;
-		int i = 0;
-		int j = 0;
-		while (i != width - 1 || j != height - 1) {
-			im1 = (i - 1 < 0 ? (i - 1) + width : i - 1);
-			jm1 = (i - 1 < 0 ? (j - 1) + height : j - 1);
-			ip1 = (i + 1 >= width ? (i + 1) - width : i + 1);
-			jp1 = (i + 1 >= height ? (j + 1) - height : j + 1);
+        // empty neighborCount
+        for (int i = 0; i < width; i++) {
+            Arrays.fill(neighborData[i], 0);
+        }
 
-			if (super.isAliveCell(i, j)) {
-				neighborData[im1][jm1] += 1;
-				neighborData[im1][j] += 1;
-				neighborData[im1][jp1] += 1;
+        // fill neighborCount
+        int im1, ip1, jm1, jp1;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                im1 = ( i == 0 ? width -1 : i - 1);
+                jm1 = ( j == 0 ? height-1 : j - 1);
+                ip1 = ( i == width -1 ? 0 : i + 1 );
+                jp1 = ( j == height-1 ? 0 : j + 1 );
+                       
+                if (grid[i][j]) {
+                    neighborData[im1][jm1] += 1;
+                    neighborData[im1][j] += 1;
+                    neighborData[im1][jp1] += 1;
 
-				neighborData[i][jm1] += 1;
-				neighborData[i][jp1] += 1;
+                    neighborData[i][jm1] += 1;
+                    neighborData[i][jp1] += 1;
 
-				neighborData[ip1][jm1] += 1;
-				neighborData[ip1][j] += 1;
-				neighborData[ip1][jp1] += 1;
-			}
+                    neighborData[ip1][jm1] += 1;
+                    neighborData[ip1][j] += 1;
+                    neighborData[ip1][jp1] += 1;
+                }
+            }
+        }
 
-			if (i != width - 1) {
-				i = width - 1;
-			} else if (j != height - 1) {
-				j = height - 1;
-			}
-		}
-	}
+    }
 }
