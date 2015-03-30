@@ -12,27 +12,46 @@ public abstract class AbstractWorld implements World {
 	private final boolean[][] firstGrid;
 	private final boolean[][] secondGrid;
 
-	// references to be used in all methods
-	protected boolean[][] cellData; 
-	protected boolean[][] swapData;
+	// useing to buffers to store data.
+	private static final boolean FIRST_GRID = true;
+	private static final boolean SECOND_GRID = false;
+	private boolean currentBuffer = FIRST_GRID;
 
 	public AbstractWorld(int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.firstGrid = new boolean[width][height];
 		this.secondGrid = new boolean[width][height];
-
-		this.cellData = firstGrid;
-		this.swapData = secondGrid;
 	}
 	
 	@Override
 	public abstract void step();
 	
-	protected void swapData(){
-			boolean[][] tmpData = cellData;
-		cellData = swapData;
-		swapData = tmpData;
+	/**
+	 * get the data that is currently showing.
+	 * @return 
+	 */
+	protected final boolean[][] getCellData(){
+		if(currentBuffer == FIRST_GRID) {
+			return firstGrid;
+		} else {
+			return secondGrid;
+		}
+	}
+	/**
+	 * get the previous data.
+	 * @return 
+	 */
+	protected final boolean[][] getPreData(){
+		if(currentBuffer == SECOND_GRID) {
+			return firstGrid;
+		} else {
+			return secondGrid;
+		}
+	}
+	
+	protected final void swapBuffer(){
+		currentBuffer = !currentBuffer;
 	}
 	protected int countNeighbors(int x, int y, boolean[][] data) {
 		final int xm1 = (x-1 < 0 ? (x-1)+width : x-1);
@@ -69,7 +88,7 @@ public abstract class AbstractWorld implements World {
 		if (y >= height) {
 			return false;
 		}
-		return cellData[x][y];
+		return getCellData()[x][y];
 	}
 
 	@Override
@@ -80,7 +99,7 @@ public abstract class AbstractWorld implements World {
 		if (y >= this.height) {
 			return;
 		}
-
+		boolean[][] cellData = getCellData();
 		cellData[x][y] = !cellData[x][y];
 	}
 	

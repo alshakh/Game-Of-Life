@@ -12,6 +12,7 @@ public class RandomWorld extends AbstractWorld {
 
 	@Override
 	public void step() {
+		boolean[][] cellData = getCellData();
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeight(); j++) {
 				cellData[i][j] = Math.random() < 0.5;

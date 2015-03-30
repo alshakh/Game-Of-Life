@@ -12,12 +12,14 @@ public class WarpedWorld extends AbstractWorld {
 
 	@Override
 	public void step() {
-		swapData();
-
+		swapBuffer(); // now cellData & preData is swapped
+		boolean[][] cellData = super.getCellData();
+		boolean[][] preData = super.getPreData();
+		
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeight(); j++) {
-				int neighbors = countNeighbors(i,j, swapData);
-				boolean thisCell = swapData[i][j];
+				int neighbors = countNeighbors(i,j, preData);
+				boolean thisCell = preData[i][j];
 				// if cell alive 2||3 ==> alive else ==> dead
 				// if cell dead     3 ==> alive else ==> dead
 				if(thisCell && (neighbors ==2 || neighbors ==3)) {
