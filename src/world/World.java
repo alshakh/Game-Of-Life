@@ -7,7 +7,7 @@ package world;
 public interface World {
 	
 	public void step();
-	public void setp(int n);
+	public void step(int n);
 	
 	public int getWidth();
 	public int getHeight();

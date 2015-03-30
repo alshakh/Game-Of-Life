@@ -64,7 +64,7 @@ public abstract class AbstractWorld implements World {
 	}
 
 	@Override
-	public void setp(int n) {
+	public void step(int n) {
 		for (int i = 0; i < n; i++) {
 			step();
 		}
