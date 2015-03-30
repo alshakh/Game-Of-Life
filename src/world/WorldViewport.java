@@ -166,16 +166,10 @@ public class WorldViewport implements Viewport {
 		final Point gridPosition = toGridPosition(windowPosition);
 		final Point cell = new Point(gridPosition.x / cellSize,
 					     gridPosition.y / cellSize);
-		if (cell.x >= worldRef.getHeight()) {
-			return NOT_A_CELL;
-		}
-		if (cell.y >= worldRef.getWidth()) {
-			return NOT_A_CELL;
-		}
-		if (cell.x < 0) {
-			return NOT_A_CELL;
-		}
-		if (cell.y < 0) {
+		if (cell.x >= worldRef.getHeight() ||
+		    cell.y >= worldRef.getWidth() ||
+		    cell.x < 0 ||
+		    cell.y < 0) {
 			return NOT_A_CELL;
 		}
 		return cell;
