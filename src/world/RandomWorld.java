@@ -19,5 +19,14 @@ public class RandomWorld extends AbstractWorld {
 			}
 		}
 	}
+
+	/**
+	 * No use here.
+	 * @param grid 
+	 */
+	@Override
+	protected void fillNeighborCountData(boolean[][] grid) {
+		return;
+	}
 	
 }

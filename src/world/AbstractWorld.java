@@ -11,7 +11,9 @@ public abstract class AbstractWorld implements World {
 	
 	private final boolean[][] firstGrid;
 	private final boolean[][] secondGrid;
-
+	
+	private final int[][] neighborCountData;
+	
 	// useing to buffers to store data.
 	private static final boolean FIRST_GRID = true;
 	private static final boolean SECOND_GRID = false;
@@ -22,10 +24,15 @@ public abstract class AbstractWorld implements World {
 		this.height = height;
 		this.firstGrid = new boolean[width][height];
 		this.secondGrid = new boolean[width][height];
+		
+		this.neighborCountData = new int[width][height];
 	}
 	
 	@Override
 	public abstract void step();
+	
+	protected abstract void fillNeighborCountData(boolean[][] grid);
+	
 	
 	/**
 	 * get the data that is currently showing.
@@ -49,19 +56,17 @@ public abstract class AbstractWorld implements World {
 			return secondGrid;
 		}
 	}
+	protected final int[][] getNeighborCountData() {
+		return neighborCountData;
+	}
+	
 	
 	protected final void swapBuffer(){
 		currentBuffer = !currentBuffer;
 	}
-	protected int countNeighbors(int x, int y, boolean[][] data) {
-		final int xm1 = (x-1 < 0 ? (x-1)+width : x-1);
-		final int ym1 = (y-1 < 0 ? (y-1)+height : y-1);
-		final int xp1 = (x+1 >= width ? (x+1) - width : x+1);
-		final int yp1 = (y+1 >= height ? (y+1) - height : y+1);
-		return   (data[xm1][ym1]?1:0) +( data[x][ym1]?1:0) + (data[xp1][ym1]?1:0)
-		       + (data[xm1][y]  ?1:0) +                      (data[xp1][y]  ?1:0)
-		       + (data[xm1][yp1]?1:0) + (data[x][yp1]?1:0) + (data[xp1][yp1]?1:0);
-	}
+	
+	
+		
 
 	@Override
 	public void step(int n) {
