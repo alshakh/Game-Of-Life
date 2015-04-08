@@ -1,4 +1,4 @@
-package io.rle;
+package io;
 
 /**
  *
@@ -6,5 +6,10 @@ package io.rle;
  */
 public interface RleTranslator {
 	
-	
+	/**
+	 *
+	 * @param rle
+	 * @return
+	 */
+	public WorldState toWorldState(Rle rle);
 }

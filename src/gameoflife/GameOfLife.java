@@ -1,6 +1,7 @@
 package gameoflife;
 
 import gui.MainFrame;
+import world.RandomWorld;
 import world.WarpedWorld;
 
 /**
@@ -9,25 +10,24 @@ import world.WarpedWorld;
  */
 public class GameOfLife {
 
-	public static void main(String args[]) {
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
 
-		/* Create and display the form */
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new MainFrame(new WarpedWorld(10, 10)).setVisible(true);
-			}
-		});
-	}
+        new MainFrame(new WarpedWorld(20, 20)).setVisible(true);
 
+//        //control time : 4.2 +- 0.1 s
+//        long time = System.currentTimeMillis();
+//        world.World w = new WarpedWorld(1000,1000);
+//        w.step(1000);
+//        System.out.println((System.currentTimeMillis() - time)/1000.0);
+    }
 }
