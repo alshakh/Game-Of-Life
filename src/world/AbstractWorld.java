@@ -1,5 +1,6 @@
 package world;
 
+import io.WorldState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -142,4 +143,8 @@ public abstract class AbstractWorld implements World {
         cellData[x][y] = !cellData[x][y];
     }
 
+    public WorldState toWorldState(boolean clone) {
+        // if()
+        return new WorldState(width,height,"B2/S23",getCellData());
+    }
 }

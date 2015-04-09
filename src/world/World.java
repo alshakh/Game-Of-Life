@@ -1,5 +1,7 @@
 package world;
 
+import io.WorldState;
+
 /**
  * DESIGN_PATTERN : observer : attach/detach
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
@@ -17,4 +19,6 @@ public interface World {
     
     public void attachListener(WorldListener wl);
     public void detachListener(WorldListener wl);
+    
+    public WorldState toWorldState(boolean clone);
 }

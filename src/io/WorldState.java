@@ -15,14 +15,15 @@ public class WorldState {
     private final String rule;
     private Rle myCachedRle = null;
 
-    WorldState(int xSize, int ySize, String rule, boolean[][] data) {
+    public WorldState(int xSize, int ySize, String rule, boolean[][] data) {
         this.data = data;
         this.X = xSize;
         this.Y = ySize;
         this.rule = rule;
     }
     public Rle toRle() {
-        return Rle.createRle(X, Y, rule, data);
+        if(myCachedRle != null) return myCachedRle;
+        myCachedRle = Rle.createRle(X, Y, rule, data);
+        return myCachedRle;
     }
-   
 }
