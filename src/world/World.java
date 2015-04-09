@@ -1,7 +1,7 @@
 package world;
 
 /**
- *
+ * DESIGN_PATTERN : observer : attach/detach
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
  */
 public interface World {
@@ -14,4 +14,7 @@ public interface World {
 	
 	public boolean isAliveCell(int x, int y);
 	public void toggle(int x,int y);
+    
+    public void attachListener(WorldListener wl);
+    public void detachListener(WorldListener wl);
 }

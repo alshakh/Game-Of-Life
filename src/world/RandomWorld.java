@@ -11,7 +11,7 @@ public class RandomWorld extends AbstractWorld {
 	}
 
 	@Override
-	public void step() {
+	protected void doStep() {
 		boolean[][] cellData = getCellData();
 		for (int i = 0; i < getWidth(); i++) {
 			for (int j = 0; j < getHeight(); j++) {

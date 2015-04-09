@@ -7,16 +7,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.JPanel;
+import world.WorldListener;
 
 /**
  *
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
  */
-public class WorldPane extends javax.swing.JPanel {
+public class WorldPane extends javax.swing.JPanel implements WorldListener {
 
 	private final Viewport viewport;
 
-	public WorldPane() {
+	public WorldPane() { // Just for showing a default picture in IDE.
 		this(new WorldViewport(new world.WarpedWorld(100, 200)));
 	}
 
@@ -26,9 +27,11 @@ public class WorldPane extends javax.swing.JPanel {
 	 * @param viewport
 	 */
 	public WorldPane(final Viewport viewport) {
-
+        if(viewport instanceof WorldViewport) {
+            ((WorldViewport)viewport).getWorld().attachListener(this);
+        }
 		this.viewport = viewport;
-
+        
 		final JPanel thisObj = this;
 		MouseAdapter ma = new MouseAdapter() {
 			Point oldPos = null;
@@ -113,4 +116,14 @@ public class WorldPane extends javax.swing.JPanel {
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void worldStepped() {
+        this.repaint();
+    }
+
+    @Override
+    public void worldToggled() {
+        this.repaint();
+    }
 }

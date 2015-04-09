@@ -13,7 +13,7 @@ public class WarpedWorld extends AbstractWorld {
     }
 
     @Override
-    public void step() {
+    protected void doStep() {
         swapBuffer(); // now cellData & preData is swapped
         boolean[][] cellData = super.getCellData();
         boolean[][] preData = super.getPreData();
@@ -77,4 +77,6 @@ public class WarpedWorld extends AbstractWorld {
         }
 
     }
+
+
 }

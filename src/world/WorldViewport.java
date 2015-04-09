@@ -34,6 +34,9 @@ public class WorldViewport implements Viewport {
 		this.cellSize = 10;
 	}
 
+    public World getWorld(){
+        return worldRef;
+    }
 	public WorldViewport(World world) {
 		this(world, null);
 	}
