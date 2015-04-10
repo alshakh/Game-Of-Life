@@ -11,11 +11,14 @@ public interface World {
 	public void step();
 	public void step(int n);
 	
-	public int getWidth();
-	public int getHeight();
+	public int getDim();
 	
+    public boolean[][] getCellData();
 	public boolean isAliveCell(int x, int y);
 	public void toggle(int x,int y);
+    
+    public void kill(int x,int y);
+    public void live(int x,int y);
     
     public void attachListener(WorldListener wl);
     public void detachListener(WorldListener wl);

@@ -8,8 +8,8 @@ import java.util.Arrays;
  */
 public class WarpedWorld extends AbstractWorld {
 
-    public WarpedWorld(int width, int height) {
-        super(width, height);
+    public WarpedWorld(int dim) {
+        super(dim);
     }
 
     @Override
@@ -22,8 +22,8 @@ public class WarpedWorld extends AbstractWorld {
         fillNeighborCountData(preData);
         // from here on, can be parallelized
 
-        for (int i = 0; i < getWidth(); i++) {
-            for (int j = 0; j < getHeight(); j++) {
+        for (int i = 0; i < getDim(); i++) {
+            for (int j = 0; j < getDim(); j++) {
 
                 int neighbors = neighborCount[i][j];
 
@@ -44,22 +44,20 @@ public class WarpedWorld extends AbstractWorld {
         // can be parallelized
 
         final int[][] neighborData = getNeighborCountData();
-        final int width = super.getWidth();
-        final int height = super.getHeight();
 
         // empty neighborCount
-        for (int i = 0; i < width; i++) {
+        for (int i = 0; i < getDim(); i++) {
             Arrays.fill(neighborData[i], 0);
         }
 
         // fill neighborCount
         int im1, ip1, jm1, jp1;
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                im1 = ( i == 0 ? width -1 : i - 1);
-                jm1 = ( j == 0 ? height-1 : j - 1);
-                ip1 = ( i == width -1 ? 0 : i + 1 );
-                jp1 = ( j == height-1 ? 0 : j + 1 );
+        for (int i = 0; i < getDim(); i++) {
+            for (int j = 0; j < getDim(); j++) {
+                im1 = ( i == 0 ? getDim()-1 : i - 1);
+                jm1 = ( j == 0 ? getDim()-1 : j - 1);
+                ip1 = ( i == getDim()-1 ? 0 : i + 1 );
+                jp1 = ( j == getDim()-1 ? 0 : j + 1 );
                        
                 if (grid[i][j]) {
                     neighborData[im1][jm1] += 1;

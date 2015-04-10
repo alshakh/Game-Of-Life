@@ -10,20 +10,18 @@ import java.util.ArrayList;
 public class WorldState {
 
     public final boolean[][] data;
-    private final int X;
-    private final int Y;
+    private final int dim;
     private final String rule;
     private Rle myCachedRle = null;
 
-    public WorldState(int xSize, int ySize, String rule, boolean[][] data) {
+    public WorldState(int dim, String rule, boolean[][] data) {
         this.data = data;
-        this.X = xSize;
-        this.Y = ySize;
+        this.dim = dim;
         this.rule = rule;
     }
     public Rle toRle() {
         if(myCachedRle != null) return myCachedRle;
-        myCachedRle = Rle.createRle(X, Y, rule, data);
+        myCachedRle = Rle.createRle(dim, rule, data);
         return myCachedRle;
     }
 }

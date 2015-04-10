@@ -29,7 +29,7 @@ public class GameOfLife {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        w = new WarpedWorld(100, 100);
+        w = new WarpedWorld(100);
         JFrame jf =  new MainFrame(w);
         jf.setVisible(true);
         //System.out.println(Utils.readFile(new File("vc.rle")));
@@ -42,11 +42,11 @@ public class GameOfLife {
             }
         }
         
-        Timer timer = new Timer();
+       /* Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 w.step();
             }
-        }, 0, 10);
+        }, 0, 10);*/
     }
 }

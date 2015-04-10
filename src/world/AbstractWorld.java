@@ -11,9 +11,6 @@ import java.util.Set;
  */
 public abstract class AbstractWorld implements World {
 
-    private final int width;
-    private final int height;
-
     private final boolean[][] firstGrid;
     private final boolean[][] secondGrid;
 
@@ -24,16 +21,16 @@ public abstract class AbstractWorld implements World {
     private static final boolean FIRST_GRID = true;
     private static final boolean SECOND_GRID = false;
     private boolean currentBuffer = FIRST_GRID;
+    private final int dim; // unit : cell
 
-    public AbstractWorld(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.firstGrid = new boolean[width][height];
-        this.secondGrid = new boolean[width][height];
+    public AbstractWorld(int dim) {
+        this.dim = dim;
+        this.firstGrid = new boolean[dim][dim];
+        this.secondGrid = new boolean[dim][dim];
 
-        this.neighborCountData = new int[width][height];
+        this.neighborCountData = new int[dim][dim];
 
-        this.listeners = new ArrayList<WorldListener>();
+        this.listeners = new ArrayList<>();
     }
 
     @Override
@@ -64,16 +61,18 @@ public abstract class AbstractWorld implements World {
         notifyListeners(WorldEvent.WORLD_STEPPED);
         doStep();
     }
-    protected abstract  void doStep();
+    
+    protected abstract  void doStep(); // DESING_PATTERN : template
 
-    protected abstract void fillNeighborCountData(boolean[][] grid);
+    protected abstract void fillNeighborCountData(boolean[][] fromGrid);
 
     /**
      * get the data that is currently showing.
      *
      * @return
      */
-    protected final boolean[][] getCellData() {
+    @Override
+    public final boolean[][] getCellData() {
         if (currentBuffer == FIRST_GRID) {
             return firstGrid;
         } else {
@@ -93,7 +92,7 @@ public abstract class AbstractWorld implements World {
             return secondGrid;
         }
     }
-
+    
     protected final int[][] getNeighborCountData() {
         return neighborCountData;
     }
@@ -110,21 +109,16 @@ public abstract class AbstractWorld implements World {
     }
 
     @Override
-    public int getWidth() {
-        return this.width;
-    }
-
-    @Override
-    public int getHeight() {
-        return this.height;
+    public int getDim() {
+        return this.dim;
     }
 
     @Override
     public boolean isAliveCell(int x, int y) {
-        if (x >= width) {
+        if (x >= dim) {
             return false;
         }
-        if (y >= height) {
+        if (y >= dim) {
             return false;
         }
         return getCellData()[x][y];
@@ -133,18 +127,43 @@ public abstract class AbstractWorld implements World {
     @Override
     public void toggle(int x, int y) {
         notifyListeners(WorldEvent.WORLD_TOGGLED);
-        if (x >= this.width) {
+        if (x >= dim) {
             return;
         }
-        if (y >= this.height) {
+        if (y >= dim) {
             return;
         }
         boolean[][] cellData = getCellData();
         cellData[x][y] = !cellData[x][y];
     }
 
+    @Override
     public WorldState toWorldState(boolean clone) {
         // if()
-        return new WorldState(width,height,"B2/S23",getCellData());
+        return new WorldState(dim,"B2/S23",getCellData());
+    }
+    
+    @Override
+    public void kill(int x, int y) {
+        notifyListeners(WorldEvent.WORLD_TOGGLED);
+        if (x >= dim) {
+            return;
+        }
+        if (y >= dim) {
+            return;
+        }
+        getCellData()[x][y] = false;
+    }
+
+    @Override
+    public void live(int x, int y) {
+        notifyListeners(WorldEvent.WORLD_TOGGLED);
+        if (x >= dim) {
+            return;
+        }
+        if (y >= dim) {
+            return;
+        }
+        getCellData()[x][y] = true;
     }
 }

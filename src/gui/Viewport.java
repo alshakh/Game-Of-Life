@@ -17,7 +17,7 @@ public interface Viewport {
 	public static final boolean RIGHT_BUTTON = true;
 	public static final boolean LEFT_BUTTON = false;
 
-	public static final Color ALIVE_COLOR = Color.WHITE;
+	public static final Color LIVE_COLOR = Color.WHITE;
 	public static final Color DEAD_COLOR = Color.BLACK;
 	public static final Color LINE_COLOR = Color.GRAY;
 
@@ -27,6 +27,7 @@ public interface Viewport {
 	public void wheeled(Point windowPosition, int amount, boolean direction);
 	public void dragged(Point fromWindowPosition, Point toWindowPosition);
 	
-	public void setSize(Dimension portSize);
-	public boolean sizeInited();
+	public void setPortSize(Dimension portSize);
+    public Dimension getPortSize();
+	public boolean portSizeInited();
 }
