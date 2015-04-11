@@ -1,23 +1,23 @@
 package gameoflife;
 
-import gui.MainFrame;
-import io.Rle;
-import io.Utils;
-import io.WorldState;
-import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
+import gui.NewGameFrame;
 import javax.swing.JFrame;
-import world.WarpedWorld;
-import world.World;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author Ahmed Alshakh <ahmed.s.alshakh@gmail.com>
  */
 public class GameOfLife {
-    static World w;
+       /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -25,28 +25,19 @@ public class GameOfLife {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            System.out.println(" EXCEPTION : " + ex);
+        } 
+        //</editor-fold>
 
-        w = new WarpedWorld(100);
-        JFrame jf =  new MainFrame(w);
-        jf.setVisible(true);
-        //System.out.println(Utils.readFile(new File("vc.rle")));
-        /*WorldState ws = new Rle(Utils.readFile(new File("res/vc.rle"))).toWorldState();
-        for (int i = 0; i < ws.data.length; i++) {
-            for (int j = 0; j < ws.data[i].length; j++) {
-                if (ws.data[i][j]) {
-                    w.toggle(i, j);
-                }
-            }
-        }*/
-        
-       /* Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                w.step();
+                JFrame ngf = new NewGameFrame();
+                ngf.setLocationRelativeTo(null);
+               ngf.setVisible(true);
             }
-        }, 0, 10);*/
+        });
     }
 }

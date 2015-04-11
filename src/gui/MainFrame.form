@@ -139,7 +139,6 @@
     <Component class="javax.swing.JButton" name="cancelRleBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancel"/>
-        <Property name="actionCommand" type="java.lang.String" value="Cancel"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>

@@ -3,13 +3,12 @@ package gui;
 import io.Rle;
 import io.Utils;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import world.RandomWorld;
 import world.WarpedWorld;
 import world.World;
 import world.viewport.AddWorldViewport;
@@ -25,15 +24,27 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form GofFrame
      */
     public MainFrame() {
-        this(new WarpedWorld(100));
+        this(100);
     }
 
-    public MainFrame(World w) {
-        this.world = w;
+    public MainFrame(int dim) {
+        this.world = new WarpedWorld(dim);
         initComponents();
         worldPane1.setFocusable(true);
     }
+   
 
+    public void start(){
+        //
+    }
+    
+    public void start(World addThisWorld){
+         try {
+            worldPane1.addWorld(addThisWorld);
+        } catch (AddWorldViewport.TooBigWorld ex) {
+            JOptionPane.showMessageDialog(this, "The world you're trying to add is too large for this game. Please start new game from your Rle file","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -183,7 +194,6 @@ public class MainFrame extends javax.swing.JFrame {
             if (returnValue != JFileChooser.APPROVE_OPTION)  return;
             File selectedFile = fileChooser.getSelectedFile();
             World newWorld = new Rle(Utils.readFile(selectedFile)).toWorldState();
-            Utils.visualize(newWorld.getCellData());
             worldPane1.addWorld(newWorld);
             // worldPane1.requestFocus()
         } catch (AddWorldViewport.TooBigWorld ex) {
@@ -193,7 +203,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addRleFileBtnActionPerformed
 
     private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
-        // TODO add your handling code here:
+        JFrame ngf = new NewGameFrame();
+                ngf.setLocationRelativeTo(this);
+               ngf.setVisible(true);
+               this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
 
     private void cancelRleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelRleBtnActionPerformed
