@@ -1,6 +1,7 @@
 package world.viewport;
 
 import gui.Viewport;
+import gui.WorldPane;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,14 +20,15 @@ public class AddWorldViewport extends AbstractGridViewport {
     private World toAddWorld = null;
 
     private final Point toAddOffset = new Point(0, 0); // unit : cells
-
-    public AddWorldViewport(World world, Dimension portSize) {
-        super(portSize);
+    public static class TooBigWorld extends Exception {}
+    
+    public AddWorldViewport(WorldPane wp,World world, Dimension portSize) {
+        super(wp,portSize);
         mainWorld = world;
     }
 
-    public AddWorldViewport(World world) {
-        this(world, null);
+    public AddWorldViewport(WorldPane wp, World world) {
+        this(wp,world, null);
     }
 
     @Override
@@ -52,7 +54,9 @@ public class AddWorldViewport extends AbstractGridViewport {
         mainWorld.step();
     }
 
-    public void AddWorld(World w) {
+    
+    public void AddWorld(World w) throws TooBigWorld {
+        if(w.getDim()>getGridDim()) throw new TooBigWorld();
         toAddWorld = w;
         toAddOffset.x = 0;
         toAddOffset.y = 0;
@@ -98,7 +102,7 @@ public class AddWorldViewport extends AbstractGridViewport {
             case KeyEvent.VK_ENTER:
                 mergeNewWorld();
                 toAddWorld = null;
-                
+                myPane.toNormal();
                 break;
         }
     }

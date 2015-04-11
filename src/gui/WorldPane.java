@@ -23,6 +23,7 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
     private final NormalWorldViewport myNormalViewport;
     private final AddWorldViewport myAddViewport;
     private World mainWorld;
+
     public WorldPane() { // Just for showing a default picture in IDE.
         this(new RandomWorld(100));
     }
@@ -36,8 +37,8 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
         mainWorld.attachListener(this);
         this.mainWorld = mainWorld;
         //
-        this.myNormalViewport = new NormalWorldViewport(mainWorld);
-        this.myAddViewport = new AddWorldViewport(mainWorld);
+        this.myNormalViewport = new NormalWorldViewport(this, mainWorld);
+        this.myAddViewport = new AddWorldViewport(this, mainWorld);
         currentViewport = myNormalViewport;
         //
         WorldPaneMouseAdapter ma = new WorldPaneMouseAdapter(this);
@@ -86,33 +87,39 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
         this.repaint();
     }
 
-    public void addWorld(World newWorld) {
+    public void addWorld(World newWorld) throws AddWorldViewport.TooBigWorld {
         syncViewports();
         currentViewport = myAddViewport;
         myAddViewport.AddWorld(newWorld);
         repaint();
     }
-    
-    public void toNormal(){
+
+    public void toNormal() {
         syncViewports();
         currentViewport = myNormalViewport;
     }
-    
+
     private void syncViewports() {
         Point currentOffset = currentViewport.getOffset();
         myAddViewport.getOffset().x = currentOffset.x;
         myAddViewport.getOffset().y = currentOffset.y;
         myNormalViewport.getOffset().x = currentOffset.x;
         myNormalViewport.getOffset().y = currentOffset.y;
+        //
+        final int cellSize = currentViewport.getCellSize();
+        myAddViewport.setCellSize(cellSize);
+        myNormalViewport.setCellSize(cellSize);
     }
 
     class WorldPaneMouseAdapter extends MouseAdapter implements KeyListener {
 
         Point oldPos = null;
         WorldPane myPane;
-        public WorldPaneMouseAdapter(WorldPane pane){
+
+        public WorldPaneMouseAdapter(WorldPane pane) {
             myPane = pane;
         }
+
         @Override
         public void mouseClicked(MouseEvent me) {
             boolean button;
@@ -124,7 +131,7 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
                 return; // other buttons are not allowed
             }
             currentViewport.clicked(me.getPoint(), button);
-            
+
             myPane.repaint();
         }
 
@@ -173,9 +180,6 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
         @Override
         public void keyReleased(KeyEvent e) {
             currentViewport.keyReleased(e.getKeyCode());
-            if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                toNormal();
-            }
             myPane.repaint();
         }
     }

@@ -1,6 +1,7 @@
 package world.viewport;
 
 import gui.Viewport;
+import gui.WorldPane;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -20,13 +21,13 @@ import world.World;
 public class NormalWorldViewport extends AbstractGridViewport {
 
     World myWorld;
-    public NormalWorldViewport(World world, Dimension portSize) {
-        super(portSize);
+    public NormalWorldViewport(WorldPane wp, World world, Dimension portSize) {
+        super(wp,portSize);
         myWorld = world;
     }
 
-    public NormalWorldViewport(World world) {
-        this(world,null);
+    public NormalWorldViewport(WorldPane wp,World world) {
+        this(wp,world,null);
     }
 
     @Override

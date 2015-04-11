@@ -38,4 +38,6 @@ public interface Viewport {
 	public boolean portSizeInited();
     
     public Point getOffset();
+    public int getCellSize();
+    public void setCellSize(int cellSize);
 }

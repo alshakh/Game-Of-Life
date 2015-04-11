@@ -1,6 +1,7 @@
 package world.viewport;
 
 import gui.Viewport;
+import gui.WorldPane;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,15 +20,18 @@ public abstract class AbstractGridViewport implements Viewport {
 
     protected int cellSize;
     protected Point offset;
+    
+    protected WorldPane myPane;
 
-    public AbstractGridViewport(Dimension portSize) {
+    public AbstractGridViewport(WorldPane wp, Dimension portSize) {
+        this.myPane = wp;
         this.portSize = portSize;
         this.offset = new Point(0, 0);
         this.cellSize = 10;
     }
 
-    public AbstractGridViewport() {
-        this(null);
+    public AbstractGridViewport(WorldPane wp) {
+        this(wp,null);
     }
 
     /**
@@ -40,6 +44,14 @@ public abstract class AbstractGridViewport implements Viewport {
     @Override
     public Point getOffset(){
         return offset;
+    }
+    
+    @Override
+    public int getCellSize(){
+        return cellSize;
+    }
+    public void setCellSize(int cellSize){
+        this.cellSize = cellSize;
     }
     @Override
     public void setPortSize(Dimension portSize) {

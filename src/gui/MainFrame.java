@@ -4,11 +4,15 @@ import io.Rle;
 import io.Utils;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import world.RandomWorld;
 import world.WarpedWorld;
 import world.World;
+import world.viewport.AddWorldViewport;
 
 /**
  *
@@ -17,7 +21,6 @@ import world.World;
 public class MainFrame extends javax.swing.JFrame {
 
     private final World world;
-
     /**
      * Creates new form GofFrame
      */
@@ -164,11 +167,7 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void stepBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepBtnActionPerformed
-        System.out.println("RLE : TEST");
-        World newWorld = new RandomWorld(50);
-        //System.out.println(Utils.visualize(newWorld.getCellData()));
-        worldPane1.addWorld(newWorld);
-        worldPane1.requestFocus();
+       
     }//GEN-LAST:event_stepBtnActionPerformed
 
     private void autoStepBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoStepBtnActionPerformed
@@ -176,16 +175,21 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_autoStepBtnActionPerformed
 
     private void addRleFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRleFileBtnActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Run Length Encodeing", "rle"));
-        int returnValue = fileChooser.showOpenDialog(null);
-        
-        if (returnValue != JFileChooser.APPROVE_OPTION)  return;
-        File selectedFile = fileChooser.getSelectedFile();
-        World newWorld = new Rle(Utils.readFile(selectedFile)).toWorldState();
-        Utils.visualize(newWorld.getCellData());
-        worldPane1.addWorld(newWorld);
-        
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Run Length Encodeing", "rle"));
+            int returnValue = fileChooser.showOpenDialog(null);
+            
+            if (returnValue != JFileChooser.APPROVE_OPTION)  return;
+            File selectedFile = fileChooser.getSelectedFile();
+            World newWorld = new Rle(Utils.readFile(selectedFile)).toWorldState();
+            Utils.visualize(newWorld.getCellData());
+            worldPane1.addWorld(newWorld);
+            // worldPane1.requestFocus()
+        } catch (AddWorldViewport.TooBigWorld ex) {
+            worldPane1.toNormal();
+            JOptionPane.showMessageDialog(this, "The world you're trying to add is too large for this game. Please start new game from your Rle file");
+        }
     }//GEN-LAST:event_addRleFileBtnActionPerformed
 
     private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
