@@ -34,30 +34,9 @@ public class NormalWorldViewport extends AbstractGridViewport {
         if (!portSizeInited()) {
             return;
         }
-        // background
-        g.setColor(Color.GRAY);
-        g.fillRect(0, 0, portSize.width, portSize.height);
+        super.paintBackground(g);
 
-
-        for (int i = 0; i < myWorld.getDim(); i++) {
-            for (int j = 0; j < myWorld.getDim(); j++) {
-                Color cellColor;
-                if (myWorld.isAliveCell(i, j)) {
-                    cellColor = Viewport.LIVE_COLOR;
-                } else {
-                    cellColor = Viewport.DEAD_COLOR;
-                }
-                g.setColor(cellColor);
-                g.fillRect(offset.x + i * cellSize, offset.y + j * cellSize, cellSize, cellSize);
-            }
-        }
-        g.setColor(LINE_COLOR);
-        for (int i = 0; i <= myWorld.getDim(); i++) {
-            g.drawLine(offset.x + cellSize * i, offset.y + 0, offset.x + cellSize * i, offset.y + myWorld.getDim() * cellSize);
-        }
-        for (int i = 0; i <= myWorld.getDim(); i++) {
-            g.drawLine(offset.x + 0, offset.y + cellSize * i, offset.x + myWorld.getDim() * cellSize, offset.y + cellSize * i);
-        }
+        paintGrid(g, myWorld.getCellData(),true);
     }
 
     @Override

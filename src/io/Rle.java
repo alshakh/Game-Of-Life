@@ -69,7 +69,7 @@ public class Rle {
             // Shouldn't reach this point with inited == false. can add in empty array.
             if (!inited) {
                 return null; // Big Problem. !!!!!! no header line.
-            }//
+            }
             // start filling data.
             for (char ch : line.toCharArray()) {
                 if (ch == Rle.EOF) {

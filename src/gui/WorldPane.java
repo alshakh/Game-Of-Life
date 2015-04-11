@@ -11,6 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import world.RandomWorld;
 import world.World;
 import world.WorldListener;
+import world.viewport.AddWorldViewport;
 
 /**
  *
@@ -19,6 +20,8 @@ import world.WorldListener;
 public class WorldPane extends javax.swing.JPanel implements WorldListener {
 
     private Viewport currentViewport;
+    private final NormalWorldViewport myNormalViewport;
+    private final AddWorldViewport myAddViewport;
     private World mainWorld;
     public WorldPane() { // Just for showing a default picture in IDE.
         this(new RandomWorld(100));
@@ -33,12 +36,15 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
         mainWorld.attachListener(this);
         this.mainWorld = mainWorld;
         //
-        currentViewport = new NormalWorldViewport(mainWorld);
+        this.myNormalViewport = new NormalWorldViewport(mainWorld);
+        this.myAddViewport = new AddWorldViewport(mainWorld);
+        currentViewport = myNormalViewport;
         //
-        MouseAdapter ma = new WorldPaneMouseAdapter(this);
+        WorldPaneMouseAdapter ma = new WorldPaneMouseAdapter(this);
         addMouseListener(ma);
         addMouseWheelListener(ma);
         addMouseMotionListener(ma);
+        addKeyListener(ma);
     }
 
     @Override
@@ -78,6 +84,26 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
     @Override
     public void worldToggled() {
         this.repaint();
+    }
+
+    public void addWorld(World newWorld) {
+        syncViewports();
+        currentViewport = myAddViewport;
+        myAddViewport.AddWorld(newWorld);
+        repaint();
+    }
+    
+    public void toNormal(){
+        syncViewports();
+        currentViewport = myNormalViewport;
+    }
+    
+    private void syncViewports() {
+        Point currentOffset = currentViewport.getOffset();
+        myAddViewport.getOffset().x = currentOffset.x;
+        myAddViewport.getOffset().y = currentOffset.y;
+        myNormalViewport.getOffset().x = currentOffset.x;
+        myNormalViewport.getOffset().y = currentOffset.y;
     }
 
     class WorldPaneMouseAdapter extends MouseAdapter implements KeyListener {
@@ -134,16 +160,23 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
 
         @Override
         public void keyTyped(KeyEvent e) {
+            currentViewport.keyTyped(e.getKeyChar());
+            myPane.repaint();
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                
-            }
+            currentViewport.keyPressed(e.getKeyCode());
+            myPane.repaint();
         }
 
         @Override
-        public void keyReleased(KeyEvent e) {}
+        public void keyReleased(KeyEvent e) {
+            currentViewport.keyReleased(e.getKeyCode());
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                toNormal();
+            }
+            myPane.repaint();
+        }
     }
 }

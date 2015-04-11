@@ -33,14 +33,14 @@ public class GameOfLife {
         JFrame jf =  new MainFrame(w);
         jf.setVisible(true);
         //System.out.println(Utils.readFile(new File("vc.rle")));
-        WorldState ws = new Rle(Utils.readFile(new File("res/vc.rle"))).toWorldState();
+        /*WorldState ws = new Rle(Utils.readFile(new File("res/vc.rle"))).toWorldState();
         for (int i = 0; i < ws.data.length; i++) {
             for (int j = 0; j < ws.data[i].length; j++) {
                 if (ws.data[i][j]) {
                     w.toggle(i, j);
                 }
             }
-        }
+        }*/
         
        /* Timer timer = new Timer();
         timer.schedule(new TimerTask() {

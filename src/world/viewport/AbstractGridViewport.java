@@ -1,6 +1,7 @@
 package world.viewport;
 
 import gui.Viewport;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -37,6 +38,10 @@ public abstract class AbstractGridViewport implements Viewport {
     public abstract int getGridDim();
 
     @Override
+    public Point getOffset(){
+        return offset;
+    }
+    @Override
     public void setPortSize(Dimension portSize) {
         this.portSize = portSize;
     }
@@ -65,18 +70,35 @@ public abstract class AbstractGridViewport implements Viewport {
         return cell;
     }
 
-    protected void paintGrid(Graphics g, boolean[][] data) {
+    protected void paintBackground(Graphics g){
+                //background
+        g.setColor(Viewport.BACKGROUND_COLOR);
+        g.fillRect(0, 0, portSize.width, portSize.height);
+    }
+    protected void paintGrid(Graphics g,boolean[][] data){
+        paintGrid(g, data,Viewport.LIVE_COLOR,false);
+    }
+    
+    protected void paintGrid(Graphics g, boolean[][] data, boolean paintDead) {
+        paintGrid(g,data,Viewport.LIVE_COLOR,paintDead);
+    }
+    
+    protected void paintGrid(Graphics g, boolean[][] data,Color liveColor,boolean paintDead) {
         if (!portSizeInited()) {
             return;
         }
-
+        
         final int worldWidth = data.length;
         final int worldHeight = data[0].length;
 
-        g.setColor(Viewport.LIVE_COLOR);
+        g.setColor(liveColor);
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
                 if (data[i][j]) {
+                    g.setColor(liveColor);
+                    g.fillRect(offset.x + i * cellSize, offset.y + j * cellSize, cellSize, cellSize);
+                } else if(paintDead){
+                    g.setColor(Viewport.DEAD_COLOR);
                     g.fillRect(offset.x + i * cellSize, offset.y + j * cellSize, cellSize, cellSize);
                 }
             }
@@ -156,5 +178,16 @@ public abstract class AbstractGridViewport implements Viewport {
 
         offset.x += (toWindowPosition.x - fromWindowPosition.x);
         offset.y += (toWindowPosition.y - fromWindowPosition.y);
+    }
+    @Override
+    public void keyPressed(int keyCode) {
+    }
+
+    @Override
+    public void keyTyped(char c) {
+    }
+
+    @Override
+    public void keyReleased(int keyCode) {
     }
 }
