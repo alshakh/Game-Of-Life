@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import world.RandomWorld;
+import world.defined.RandomWorld;
 import world.World;
 import world.WorldListener;
 import world.viewport.AddWorldViewport;
@@ -96,7 +96,9 @@ public class WorldPane extends javax.swing.JPanel implements WorldListener {
 
     public void toNormal() {
         syncViewports();
+        myAddViewport.noAddWorld();
         currentViewport = myNormalViewport;
+        repaint();
     }
 
     private void syncViewports() {

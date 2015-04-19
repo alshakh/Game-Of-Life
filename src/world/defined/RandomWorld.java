@@ -1,4 +1,6 @@
-package world;
+package world.defined;
+
+import world.AbstractWorld;
 
 /**
  *
@@ -7,7 +9,7 @@ package world;
 public class RandomWorld extends AbstractWorld {
 
 	public RandomWorld(int dim) {
-		super(dim);
+		super(dim,null);
         this.step();
 	}
 

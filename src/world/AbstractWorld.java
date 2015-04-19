@@ -1,5 +1,6 @@
 package world;
 
+import world.defined.ConwayRule;
 import io.WorldState;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public abstract class AbstractWorld implements World {
     private final boolean[][] secondGrid;
 
     private final int[][] neighborCountData;
+    private final Rule rule;
 
     private final List<WorldListener> listeners;
     // useing to buffers to store data.
@@ -23,7 +25,7 @@ public abstract class AbstractWorld implements World {
     private boolean currentBuffer = FIRST_GRID;
     private final int dim; // unit : cell
 
-    public AbstractWorld(int dim) {
+    public AbstractWorld(int dim, Rule rule) {
         this.dim = dim;
         this.firstGrid = new boolean[dim][dim];
         this.secondGrid = new boolean[dim][dim];
@@ -31,6 +33,11 @@ public abstract class AbstractWorld implements World {
         this.neighborCountData = new int[dim][dim];
 
         this.listeners = new ArrayList<>();
+        
+        this.rule = rule;
+    }
+    public AbstractWorld(int dim){
+        this(dim,ConwayRule.INSTANCE);
     }
 
     @Override
@@ -108,6 +115,9 @@ public abstract class AbstractWorld implements World {
         }
     }
 
+    public Rule getRule(){
+        return rule;
+    }
     @Override
     public int getDim() {
         return this.dim;
@@ -140,7 +150,7 @@ public abstract class AbstractWorld implements World {
     @Override
     public WorldState toWorldState(boolean clone) {
         // if()
-        return new WorldState(dim,"B2/S23",getCellData());
+        return new WorldState(dim,rule,getCellData());
     }
     
     @Override

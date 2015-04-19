@@ -1,6 +1,8 @@
-package world;
+package world.defined;
 
 import java.util.Arrays;
+import world.AbstractWorld;
+import world.Rule;
 
 /**
  *
@@ -8,8 +10,11 @@ import java.util.Arrays;
  */
 public class WarpedWorld extends AbstractWorld {
 
+    public WarpedWorld(int dim, Rule rule) {
+        super(dim,rule);
+    }
     public WarpedWorld(int dim) {
-        super(dim);
+        super(dim,ConwayRule.INSTANCE);
     }
 
     @Override
@@ -27,14 +32,7 @@ public class WarpedWorld extends AbstractWorld {
 
                 int neighbors = neighborCount[i][j];
 
-                boolean thisCell = preData[i][j];
-                // if cell alive 2||3 ==> alive else ==> dead
-                // if cell dead     3 ==> alive else ==> dead
-                if (thisCell && (neighbors == 2 || neighbors == 3)) {
-                    cellData[i][j] = true;
-                } else {
-                    cellData[i][j] = !thisCell && neighbors == 3;
-                }
+                cellData[i][j] = super.getRule().newValue(preData[i][j], neighborCount[i][j]);
             }
         }
     }

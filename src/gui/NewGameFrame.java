@@ -1,12 +1,17 @@
 package gui;
 
 import io.Rle;
+import io.UnsupportedRuleException;
 import io.Utils;
 import io.WorldState;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import world.defined.WarpedWorld;
+import world.viewport.AddWorldViewport;
 
 /**
  *
@@ -145,23 +150,43 @@ public class NewGameFrame extends javax.swing.JFrame {
         WorldState addThis = null;
         if (selectedFile != null) {
 
-            addThis = new Rle(Utils.readFile(selectedFile)).toWorldState();
+            try {
+                addThis = new Rle(Utils.readFile(selectedFile)).toWorldState();
+            } catch (UnsupportedRuleException ex) {
+                JOptionPane.showMessageDialog(this, "The rule in " + selectedFile.getParent() + " is not supported", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             if (addThis.getDim() > dim) {
                 JOptionPane.showMessageDialog(this, "The RLE file has Dim of : " + addThis.getDim() + "The world is smaller than this. Fix this by making the dim bigger or making RLE file smaller", "Error!", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
-        MainFrame mf = new MainFrame(dim);
-        mf.setLocationRelativeTo(this);
+        
+        MainFrame mf;
         if (addThis == null) {
-            mf.start();
+            mf = new MainFrame(new WarpedWorld(dim));
         } else {
-            mf.start(addThis);
+            
+            for(int i = 0 ; i< 5 ; i++) {
+                System.out.print(i + " ");
+                System.out.print(addThis.getRule().newValue(true, i)+"   ");
+                System.out.println(addThis.getRule().newValue(false, i)+"   ");
+            }
+            mf = new MainFrame(new WarpedWorld(dim, addThis.getRule()));
+            try {
+                mf.startByAdding(addThis);
+            } catch (AddWorldViewport.TooBigWorld ex) {
+                JOptionPane.showMessageDialog(this, "The world you're trying to add is too large for this game. Please start new game from your Rle file", "Error", JOptionPane.ERROR_MESSAGE);
+                mf.dispose();
+                return;
+            }
         }
+        mf.setLocationRelativeTo(this);
+
         mf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_okBtnActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

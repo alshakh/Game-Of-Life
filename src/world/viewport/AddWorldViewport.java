@@ -84,6 +84,9 @@ public class AddWorldViewport extends AbstractGridViewport {
         }
     }
 
+    public void noAddWorld(){
+        toAddWorld = null;
+    }
     @Override
     public void keyPressed(int keyCode) {
         switch (keyCode) {

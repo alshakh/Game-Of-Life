@@ -1,15 +1,20 @@
 package gui;
 
 import io.Rle;
+import io.UnsupportedRuleException;
 import io.Utils;
+import io.WorldState;
 import java.io.File;
+import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import world.WarpedWorld;
 import world.World;
 import world.viewport.AddWorldViewport;
 
@@ -20,31 +25,24 @@ import world.viewport.AddWorldViewport;
 public class MainFrame extends javax.swing.JFrame {
 
     private final World world;
-    /**
-     * Creates new form GofFrame
-     */
-    public MainFrame() {
-        this(100);
-    }
+    private final Timer timer = new Timer();
+    private final int WATCH_INTERVAL = 300;
 
-    public MainFrame(int dim) {
-        this.world = new WarpedWorld(dim);
+    private final JComponent[] compo_arr;
+
+    public MainFrame(World world) {
+        this.world = world;
         initComponents();
         worldPane1.setFocusable(true);
+        compo_arr = new JComponent[]{
+            stepBtn, autoFastBtn, autoStepBtn, exportRleBtn, addRleFileBtn, cancelRleBtn, newGameBtn
+        };
     }
-   
 
-    public void start(){
-        //
+    void startByAdding(WorldState addThis) throws AddWorldViewport.TooBigWorld {
+        worldPane1.addWorld(addThis);
     }
-    
-    public void start(World addThisWorld){
-         try {
-            worldPane1.addWorld(addThisWorld);
-        } catch (AddWorldViewport.TooBigWorld ex) {
-            JOptionPane.showMessageDialog(this, "The world you're trying to add is too large for this game. Please start new game from your Rle file","Error",JOptionPane.ERROR_MESSAGE);
-        }
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,13 +54,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         worldPane1 = new WorldPane(world);
         stepBtn = new javax.swing.JButton();
-        autoStepBtn = new javax.swing.JButton();
+        autoFastBtn = new javax.swing.JButton();
         addRleFileBtn = new javax.swing.JButton();
         newGameBtn = new javax.swing.JButton();
-        timeIntervalField = new javax.swing.JTextField();
         cancelRleBtn = new javax.swing.JButton();
-        cancelRleBtn1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        exportRleBtn = new javax.swing.JButton();
+        autoStepBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 10, 0, 0));
@@ -71,7 +68,7 @@ public class MainFrame extends javax.swing.JFrame {
         worldPane1.setLayout(worldPane1Layout);
         worldPane1Layout.setHorizontalGroup(
             worldPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 677, Short.MAX_VALUE)
+            .addGap(0, 659, Short.MAX_VALUE)
         );
         worldPane1Layout.setVerticalGroup(
             worldPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,20 +76,23 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         stepBtn.setText("Step");
+        stepBtn.setFocusable(false);
         stepBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stepBtnActionPerformed(evt);
             }
         });
 
-        autoStepBtn.setText("Auto");
-        autoStepBtn.addActionListener(new java.awt.event.ActionListener() {
+        autoFastBtn.setText("Auto Fast");
+        autoFastBtn.setFocusable(false);
+        autoFastBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                autoStepBtnActionPerformed(evt);
+                autoFastBtnActionPerformed(evt);
             }
         });
 
         addRleFileBtn.setText("Add RLE file..");
+        addRleFileBtn.setFocusable(false);
         addRleFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addRleFileBtnActionPerformed(evt);
@@ -100,31 +100,37 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         newGameBtn.setText("New Game..");
+        newGameBtn.setFocusable(false);
         newGameBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newGameBtnActionPerformed(evt);
             }
         });
 
-        timeIntervalField.setText("0");
-
         cancelRleBtn.setText("Cancel");
-        cancelRleBtn.setActionCommand("Cancel");
         cancelRleBtn.setEnabled(false);
+        cancelRleBtn.setFocusable(false);
         cancelRleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelRleBtnActionPerformed(evt);
             }
         });
 
-        cancelRleBtn1.setText("Export RLE file..");
-        cancelRleBtn1.addActionListener(new java.awt.event.ActionListener() {
+        exportRleBtn.setText("Export RLE file..");
+        exportRleBtn.setFocusable(false);
+        exportRleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelRleBtn1ActionPerformed(evt);
+                exportRleBtnActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("100th s");
+        autoStepBtn.setText("Auto Step");
+        autoStepBtn.setFocusable(false);
+        autoStepBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autoStepBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,14 +144,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(stepBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(addRleFileBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newGameBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cancelRleBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cancelRleBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(autoStepBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(timeIntervalField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)))
+                    .addComponent(exportRleBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                    .addComponent(cancelRleBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(autoFastBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(autoStepBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -153,9 +155,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(worldPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(worldPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(newGameBtn)
                         .addGap(35, 35, 35)
@@ -163,70 +163,157 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelRleBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelRleBtn1)
-                        .addGap(139, 139, 139)
+                        .addComponent(exportRleBtn)
+                        .addGap(147, 147, 147)
                         .addComponent(stepBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(autoStepBtn)
-                            .addComponent(timeIntervalField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(86, 86, 86))))
+                        .addComponent(autoFastBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(autoStepBtn)
+                        .addGap(0, 27, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //// use by the auto btns
+    private void disableAllExcept(JComponent obj) {
+        for (JComponent jc : compo_arr) {
+            if (jc.equals(obj)) {
+                continue;
+            }
+            jc.setEnabled(false);
+        }
+    }
+
+    private void enableAllBtns() {
+        for (JComponent jc : compo_arr) {
+            jc.setEnabled(true);
+        }
+    }
+    private boolean currentlyWorking = false;
+    private TimerTask currentTT = null;
+    ///
+
     private void stepBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepBtnActionPerformed
-       
+        world.step();
     }//GEN-LAST:event_stepBtnActionPerformed
 
-    private void autoStepBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoStepBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_autoStepBtnActionPerformed
+    private void autoFastBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoFastBtnActionPerformed
+        if (!currentlyWorking) {
+            disableAllExcept(autoFastBtn);
+            currentTT = new TimerTask() {
+                @Override
+                public void run() {
+                    world.step();
+                }
+            };
+            timer.scheduleAtFixedRate(currentTT, 0, 10);
+            autoFastBtn.setText("Cancel");
+            currentlyWorking = true;
+        } else {
+            autoFastBtn.setText("Auto Fast");
+            enableAllBtns();
+            currentTT.cancel();
+            timer.purge();
+            currentlyWorking = false;
+        }
+    }//GEN-LAST:event_autoFastBtnActionPerformed
 
     private void addRleFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRleFileBtnActionPerformed
         try {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Run Length Encodeing", "rle"));
             int returnValue = fileChooser.showOpenDialog(null);
-            
-            if (returnValue != JFileChooser.APPROVE_OPTION)  return;
+
+            if (returnValue != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
             File selectedFile = fileChooser.getSelectedFile();
-            World newWorld = new Rle(Utils.readFile(selectedFile)).toWorldState();
+            World newWorld = null;
+            try {
+                newWorld = new Rle(Utils.readFile(selectedFile)).toWorldState();
+            } catch (UnsupportedRuleException ex) {
+                JOptionPane.showMessageDialog(this, "The rule in " + selectedFile.getParent() + " is not supported", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (newWorld == null) {
+                return;
+            }
             worldPane1.addWorld(newWorld);
             // worldPane1.requestFocus()
         } catch (AddWorldViewport.TooBigWorld ex) {
             worldPane1.toNormal();
             JOptionPane.showMessageDialog(this, "The world you're trying to add is too large for this game. Please start new game from your Rle file");
         }
+        cancelRleBtn.setEnabled(true);
     }//GEN-LAST:event_addRleFileBtnActionPerformed
 
     private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
         JFrame ngf = new NewGameFrame();
-                ngf.setLocationRelativeTo(this);
-               ngf.setVisible(true);
-               this.dispose();
+        ngf.setLocationRelativeTo(this);
+        ngf.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
 
     private void cancelRleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelRleBtnActionPerformed
-        // TODO add your handling code here:
+        worldPane1.toNormal();
+
+        cancelRleBtn.setEnabled(false);
     }//GEN-LAST:event_cancelRleBtnActionPerformed
 
-    private void cancelRleBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelRleBtn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelRleBtn1ActionPerformed
+    private void exportRleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportRleBtnActionPerformed
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Run Length Encodeing", "rle"));
+        int returnValue = fileChooser.showSaveDialog(null);
+
+        if (returnValue != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File selectedFile = fileChooser.getSelectedFile();
+        try {
+            Utils.saveFile(selectedFile,world.toWorldState(false).toRle().getContents());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot save file : " + ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+    }//GEN-LAST:event_exportRleBtnActionPerformed
+
+
+    private void autoStepBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoStepBtnActionPerformed
+        if (!currentlyWorking) {
+            disableAllExcept(autoStepBtn);
+            currentTT = new TimerTask() {
+                @Override
+                public void run() {
+                    world.step();
+                }
+            };
+            timer.scheduleAtFixedRate(currentTT, 0, WATCH_INTERVAL);
+            autoStepBtn.setText("Cancel");
+            currentlyWorking = true;
+        } else {
+            autoStepBtn.setText("Auto Step");
+            enableAllBtns();
+            currentTT.cancel();
+            timer.purge();
+            currentlyWorking = false;
+        }
+    }//GEN-LAST:event_autoStepBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRleFileBtn;
+    private javax.swing.JButton autoFastBtn;
     private javax.swing.JButton autoStepBtn;
     private javax.swing.JButton cancelRleBtn;
-    private javax.swing.JButton cancelRleBtn1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton exportRleBtn;
     private javax.swing.JButton newGameBtn;
     private javax.swing.JButton stepBtn;
-    private javax.swing.JTextField timeIntervalField;
     private gui.WorldPane worldPane1;
     // End of variables declaration//GEN-END:variables
+
 }

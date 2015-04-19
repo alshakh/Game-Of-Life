@@ -34,15 +34,10 @@
                   <Component id="stepBtn" alignment="1" max="32767" attributes="0"/>
                   <Component id="addRleFileBtn" alignment="1" max="32767" attributes="0"/>
                   <Component id="newGameBtn" alignment="1" max="32767" attributes="0"/>
-                  <Component id="cancelRleBtn" alignment="1" max="32767" attributes="0"/>
-                  <Component id="cancelRleBtn1" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="autoStepBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="timeIntervalField" min="-2" pref="37" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="exportRleBtn" alignment="0" pref="174" max="32767" attributes="0"/>
+                  <Component id="cancelRleBtn" alignment="0" max="32767" attributes="0"/>
+                  <Component id="autoFastBtn" alignment="0" max="32767" attributes="0"/>
+                  <Component id="autoStepBtn" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -53,10 +48,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="worldPane1" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="worldPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="newGameBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
@@ -64,18 +56,17 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelRleBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cancelRleBtn1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
+                      <Component id="exportRleBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
                       <Component id="stepBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="autoStepBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="timeIntervalField" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                      <Component id="autoFastBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="autoStepBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -89,7 +80,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="677" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="659" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -102,22 +93,25 @@
     <Component class="javax.swing.JButton" name="stepBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Step"/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stepBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="autoStepBtn">
+    <Component class="javax.swing.JButton" name="autoFastBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Auto"/>
+        <Property name="text" type="java.lang.String" value="Auto Fast"/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoStepBtnActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoFastBtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addRleFileBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add RLE file.."/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addRleFileBtnActionPerformed"/>
@@ -126,37 +120,39 @@
     <Component class="javax.swing.JButton" name="newGameBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="New Game.."/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newGameBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="timeIntervalField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="cancelRleBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancel"/>
         <Property name="enabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelRleBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="cancelRleBtn1">
+    <Component class="javax.swing.JButton" name="exportRleBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Export RLE file.."/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelRleBtn1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportRleBtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JButton" name="autoStepBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="100th s"/>
+        <Property name="text" type="java.lang.String" value="Auto Step"/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoStepBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

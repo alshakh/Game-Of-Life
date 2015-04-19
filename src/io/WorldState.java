@@ -1,5 +1,6 @@
 package io;
 
+import world.Rule;
 import world.World;
 import world.WorldListener;
 
@@ -12,10 +13,10 @@ public class WorldState implements World {
 
     public final boolean[][] data;
     private final int dim;
-    private final String rule;
+    private final Rule rule;
     private Rle myCachedRle = null;
 
-    public WorldState(int dim, String rule, boolean[][] data) {
+    public WorldState(int dim, Rule rule, boolean[][] data) {
         this.data = data;
         this.dim = dim;
         this.rule = rule;
@@ -82,5 +83,9 @@ public class WorldState implements World {
     @Override
     public WorldState toWorldState(boolean clone) {
         return this;
+    }
+    
+    public Rule getRule(){
+        return rule;
     }
 }

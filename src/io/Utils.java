@@ -1,9 +1,11 @@
 package io;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -32,6 +34,17 @@ public class Utils {
 			}
 		}
         return sb.toString();
+    }
+    public static void saveFile(File file, String contents) throws IOException {
+        // if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+ 
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(contents);
+			bw.close();
     }
     public boolean WriteFile(String content, File file) {
         try (PrintWriter writer = new PrintWriter(file)) {
