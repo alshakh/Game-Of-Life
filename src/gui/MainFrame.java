@@ -219,7 +219,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             };
             timer.scheduleAtFixedRate(currentTT, 0, 10);
-            autoFastBtn.setText("Cancel");
+            autoFastBtn.setText("Stop");
             currentlyWorking = true;
         } else {
             autoFastBtn.setText("Auto Fast");
@@ -295,7 +295,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             };
             timer.scheduleAtFixedRate(currentTT, 0, WATCH_INTERVAL);
-            autoStepBtn.setText("Cancel");
+            autoStepBtn.setText("Stop");
             currentlyWorking = true;
         } else {
             autoStepBtn.setText("Auto Step");
