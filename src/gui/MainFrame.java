@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -35,7 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         worldPane1.setFocusable(true);
         compo_arr = new JComponent[]{
-            stepBtn, autoFastBtn, autoStepBtn, exportRleBtn, addRleFileBtn, cancelRleBtn, newGameBtn
+            stepBtn, autoFastBtn, autoStepBtn, exportRleBtn, addRleFileBtn, cancelRleBtn, newGameBtn, clearBtn
         };
     }
 
@@ -60,6 +58,8 @@ public class MainFrame extends javax.swing.JFrame {
         cancelRleBtn = new javax.swing.JButton();
         exportRleBtn = new javax.swing.JButton();
         autoStepBtn = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
+        pupulateBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 10, 0, 0));
@@ -132,6 +132,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        clearBtn.setText("Clear");
+        clearBtn.setFocusable(false);
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
+
+        pupulateBtn.setText("Populate Randomly");
+        pupulateBtn.setFocusable(false);
+        pupulateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pupulateBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,7 +163,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(exportRleBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                     .addComponent(cancelRleBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(autoFastBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(autoStepBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(autoStepBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pupulateBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -164,7 +182,11 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(cancelRleBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exportRleBtn)
-                        .addGap(147, 147, 147)
+                        .addGap(30, 30, 30)
+                        .addComponent(pupulateBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(clearBtn)
+                        .addGap(45, 45, 45)
                         .addComponent(stepBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(autoFastBtn)
@@ -304,14 +326,29 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_autoStepBtnActionPerformed
 
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        world.zero();
+        cancelRleBtnActionPerformed(null);
+    }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void pupulateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupulateBtnActionPerformed
+        for(int i = 0 ; i < world.getDim() ; i++) {
+            for ( int j = 0 ; j < world.getDim() ; j++ ) {
+                if(Math.random()<0.5) world.toggle(i, j);
+            }
+        }
+    }//GEN-LAST:event_pupulateBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRleFileBtn;
     private javax.swing.JButton autoFastBtn;
     private javax.swing.JButton autoStepBtn;
     private javax.swing.JButton cancelRleBtn;
+    private javax.swing.JButton clearBtn;
     private javax.swing.JButton exportRleBtn;
     private javax.swing.JButton newGameBtn;
+    private javax.swing.JButton pupulateBtn;
     private javax.swing.JButton stepBtn;
     private gui.WorldPane worldPane1;
     // End of variables declaration//GEN-END:variables

@@ -24,4 +24,6 @@ public interface World {
     public void detachListener(WorldListener wl);
     
     public WorldState toWorldState(boolean clone);
+
+    public void zero();
 }

@@ -3,6 +3,7 @@ package world;
 import world.defined.ConwayRule;
 import io.WorldState;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -33,11 +34,12 @@ public abstract class AbstractWorld implements World {
         this.neighborCountData = new int[dim][dim];
 
         this.listeners = new ArrayList<>();
-        
+
         this.rule = rule;
     }
-    public AbstractWorld(int dim){
-        this(dim,ConwayRule.INSTANCE);
+
+    public AbstractWorld(int dim) {
+        this(dim, ConwayRule.INSTANCE);
     }
 
     @Override
@@ -68,8 +70,8 @@ public abstract class AbstractWorld implements World {
         notifyListeners(WorldEvent.WORLD_STEPPED);
         doStep();
     }
-    
-    protected abstract  void doStep(); // DESING_PATTERN : template
+
+    protected abstract void doStep(); // DESING_PATTERN : template
 
     protected abstract void fillNeighborCountData(boolean[][] fromGrid);
 
@@ -99,7 +101,7 @@ public abstract class AbstractWorld implements World {
             return secondGrid;
         }
     }
-    
+
     protected final int[][] getNeighborCountData() {
         return neighborCountData;
     }
@@ -115,9 +117,10 @@ public abstract class AbstractWorld implements World {
         }
     }
 
-    public Rule getRule(){
+    public Rule getRule() {
         return rule;
     }
+
     @Override
     public int getDim() {
         return this.dim;
@@ -150,9 +153,9 @@ public abstract class AbstractWorld implements World {
     @Override
     public WorldState toWorldState(boolean clone) {
         // if()
-        return new WorldState(dim,rule,getCellData());
+        return new WorldState(dim, rule, getCellData());
     }
-    
+
     @Override
     public void kill(int x, int y) {
         notifyListeners(WorldEvent.WORLD_TOGGLED);
@@ -175,5 +178,16 @@ public abstract class AbstractWorld implements World {
             return;
         }
         getCellData()[x][y] = true;
+    }
+
+    @Override
+    public void zero() {
+        for (boolean[] a : firstGrid) {
+            Arrays.fill(a, false);
+        }
+        for (boolean[] a : secondGrid) {
+            Arrays.fill(a, false);
+        }
+        notifyListeners(WorldEvent.WORLD_STEPPED);
     }
 }

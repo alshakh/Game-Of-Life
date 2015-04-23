@@ -88,4 +88,8 @@ public class WorldState implements World {
     public Rule getRule(){
         return rule;
     }
+    
+    public void zero() {
+         
+    }
 }
