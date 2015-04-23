@@ -107,6 +107,10 @@ public class AddWorldViewport extends AbstractGridViewport {
                 toAddWorld = null;
                 myPane.toNormal();
                 break;
+            case KeyEvent.VK_ESCAPE :
+                toAddWorld = null;
+                myPane.toNormal();
+                break;
         }
     }
 

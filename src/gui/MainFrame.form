@@ -35,7 +35,6 @@
                   <Component id="addRleFileBtn" alignment="1" max="32767" attributes="0"/>
                   <Component id="newGameBtn" alignment="1" max="32767" attributes="0"/>
                   <Component id="exportRleBtn" alignment="0" pref="174" max="32767" attributes="0"/>
-                  <Component id="cancelRleBtn" alignment="0" max="32767" attributes="0"/>
                   <Component id="autoFastBtn" alignment="0" max="32767" attributes="0"/>
                   <Component id="autoStepBtn" alignment="1" max="32767" attributes="0"/>
                   <Component id="clearBtn" alignment="0" max="32767" attributes="0"/>
@@ -56,10 +55,8 @@
                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                       <Component id="addRleFileBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cancelRleBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="exportRleBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                       <Component id="pupulateBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="clearBtn" min="-2" max="-2" attributes="0"/>
@@ -130,16 +127,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newGameBtnActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="cancelRleBtn">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Cancel"/>
-        <Property name="enabled" type="boolean" value="false"/>
-        <Property name="focusable" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelRleBtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="exportRleBtn">

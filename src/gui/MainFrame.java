@@ -33,7 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         worldPane1.setFocusable(true);
         compo_arr = new JComponent[]{
-            stepBtn, autoFastBtn, autoStepBtn, exportRleBtn, addRleFileBtn, cancelRleBtn, newGameBtn, clearBtn
+            stepBtn, autoFastBtn, autoStepBtn, exportRleBtn, addRleFileBtn, newGameBtn, clearBtn
         };
     }
 
@@ -55,7 +55,6 @@ public class MainFrame extends javax.swing.JFrame {
         autoFastBtn = new javax.swing.JButton();
         addRleFileBtn = new javax.swing.JButton();
         newGameBtn = new javax.swing.JButton();
-        cancelRleBtn = new javax.swing.JButton();
         exportRleBtn = new javax.swing.JButton();
         autoStepBtn = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
@@ -107,15 +106,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        cancelRleBtn.setText("Cancel");
-        cancelRleBtn.setEnabled(false);
-        cancelRleBtn.setFocusable(false);
-        cancelRleBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelRleBtnActionPerformed(evt);
-            }
-        });
-
         exportRleBtn.setText("Export RLE file..");
         exportRleBtn.setFocusable(false);
         exportRleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +151,6 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(addRleFileBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(newGameBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(exportRleBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                    .addComponent(cancelRleBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(autoFastBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(autoStepBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -179,10 +168,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addComponent(addRleFileBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelRleBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exportRleBtn)
-                        .addGap(30, 30, 30)
+                        .addGap(69, 69, 69)
                         .addComponent(pupulateBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clearBtn)
@@ -269,7 +256,6 @@ public class MainFrame extends javax.swing.JFrame {
             worldPane1.toNormal();
             JOptionPane.showMessageDialog(this, "The world you're trying to add is too large for this game. Please start new game from your Rle file");
         }
-        cancelRleBtn.setEnabled(true);
     }//GEN-LAST:event_addRleFileBtnActionPerformed
 
     private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
@@ -278,12 +264,6 @@ public class MainFrame extends javax.swing.JFrame {
         ngf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_newGameBtnActionPerformed
-
-    private void cancelRleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelRleBtnActionPerformed
-        worldPane1.toNormal();
-
-        cancelRleBtn.setEnabled(false);
-    }//GEN-LAST:event_cancelRleBtnActionPerformed
 
     private void exportRleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportRleBtnActionPerformed
 
@@ -328,7 +308,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
         world.zero();
-        cancelRleBtnActionPerformed(null);
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void pupulateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pupulateBtnActionPerformed
@@ -344,7 +323,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton addRleFileBtn;
     private javax.swing.JButton autoFastBtn;
     private javax.swing.JButton autoStepBtn;
-    private javax.swing.JButton cancelRleBtn;
     private javax.swing.JButton clearBtn;
     private javax.swing.JButton exportRleBtn;
     private javax.swing.JButton newGameBtn;
